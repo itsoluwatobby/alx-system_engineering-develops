@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# Script that displays lines containing bash running processes only.
+
+ps -aux | grep bash
