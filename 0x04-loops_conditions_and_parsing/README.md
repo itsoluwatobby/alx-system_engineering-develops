@@ -3,7 +3,7 @@
 ## About Bash projects
 Unless stated, all your projects will be auto-corrected with Ubuntu 20.04 LTS.
 
-> Learning Objectives
+> Learning Objectives.
 At the end of this project, you are expected to be able to explain to anyone, without the help of Google:
 
 > _**General**_

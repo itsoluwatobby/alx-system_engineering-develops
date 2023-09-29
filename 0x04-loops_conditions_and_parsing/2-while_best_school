@@ -1,11 +1,10 @@
 #!/usr/bin/env bash
 # This script is displaying "Best School" 10 times
 
-text="Best School"
 count=0
 
 while [[ count -lt 10 ]]
 do
-	echo $text
-	count=$((count+1))
+	echo "Best School"
+	(( count++ ))
 done
