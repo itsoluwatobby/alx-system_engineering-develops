@@ -1,4 +1,4 @@
-# Using Puppet to setup ssh config file
+# Using Puppet to setup ssh config files
 
 file_line { 'IdentityFile':
   ensure => 'present',
