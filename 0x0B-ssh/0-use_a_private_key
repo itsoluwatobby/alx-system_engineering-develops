@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# Using ssh to connect to my server with the private key in ~/.ssh/holberton with the user ubuntu.
+
+ssh ubuntu@52.91.148.80 -i ~/.ssh/school
