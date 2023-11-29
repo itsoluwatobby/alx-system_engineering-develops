@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # script to install nginx and make return a page with a string 'Hello World'
 
-apt-get update
-apt-get -y install nginx
+sudo apt-get update
+sudo apt-get -y install nginx
 
 mkdir /var/www/html
 touch /var/www/html/index.nginx-debian.html
@@ -16,4 +16,4 @@ printf %s "server {
 }
 " > /var/www/html/sites-available/default
 
-service nginx start
+sudo service nginx start

@@ -2,21 +2,14 @@
 # script to install nginx and then return a page with a string 'Hello World'
 # We are make sure that the '/redirect_me' url is a permanent redirect
 
-apt-get update
-apt-get install -y nginx
+sudo apt-get update
+sudo apt-get install -y nginx
 
-mkdir /etc/nginx/html
-touch /etc/nginx/html/index.html
-echo "Hello World!" > /etc/nginx/html/index.html
+mkdir /var/www/html
+touch /var/www/html/index.nginx-debian.html
+sudo chown -R ubuntu /var/www
+echo "Hello World!" > /var/www/html/index.nginx-debian.html
 
-# var_line="rewrite ^/redirect_me$ https://www.google.com permanent;"
+sudo sed -i "30i $ADD301_REDIRECT" /etc/nginx/sites-available/default
 
-printf %s "server {
-     listen      80 default_server;
-     listen      [::]:80 default_server;
-     root        /etc/nginx/html;
-     index       index.html index.htm;
-}
-" > /etc/nginx/sites-available/default
-
-service nginx start
+sudo service nginx start
