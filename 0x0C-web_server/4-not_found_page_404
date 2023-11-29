@@ -3,23 +3,22 @@
 # a script to install nginx and then return a page with a string 'Hello World'
 # We are to make sure that the '/redirect_me' url is a permanent redirect
 
-apt-get update
-apt-get install -y nginx
+sudo apt-get update
+sudo apt-get install -y nginx
 
-mkdir /etc/nginx/html
-touch /etc/nginx/html/index.html
 echo "Hello World!" > /etc/nginx/html/index.html
 
-#line1="rewrite ^/redirect_me$ https://www.google.com permanent"
-#line2="rewrite ^/redirect_me/$ https://www.google.com permanent"
+line1="\\\trewrite ^/redirect_me$ https://www.google.com permanent"
+line2="\n\\terror_page 404 /404.html;\n\tlocation = /var/www/html/404.html {\n\t\tinternal;\n\t}"
+PATTERN="#error_page 404 /404.html;"
 
-echo "Ceci n'est pas une page" >> /etc/nginx/html/error_404.html
-printf %s "server {
-     listen      80 default_server;
-     listen      [::]:80 default_server;
-     root        /etc/nginx/html;
-     index       index.html index.htm;
-}
-" > /etc/nginx/sites-available/default
+sudo chown -R ubuntu /var/www
+echo "Hello World!" > /var/www/html/index.nginx-debian.html
 
-service nginx start
+sudo sed -i "30i $line1" /etc/nginx/sites-available/default
+echo "Ceci n'est pas une page" > /var/www/html/404.html
+
+sudo sed -i "47i\ $PATTERN$line2" /etc/nginx/sites-available/default
+
+sudo service nginx restart
+sudo service nginx reload

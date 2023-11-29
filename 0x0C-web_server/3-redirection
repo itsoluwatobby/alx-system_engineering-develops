@@ -5,11 +5,9 @@
 sudo apt-get update
 sudo apt-get install -y nginx
 
-mkdir /var/www/html
-touch /var/www/html/index.nginx-debian.html
 sudo chown -R ubuntu /var/www
 echo "Hello World!" > /var/www/html/index.nginx-debian.html
-
-sudo sed -i "30i $ADD301_REDIRECT" /etc/nginx/sites-available/default
+REDIRECT_LINK="\\\trewrite ^/redirect_me https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;"
+sudo sed -i "30i $REDIRECT_LINK" /etc/nginx/sites-available/default
 
 sudo service nginx start
