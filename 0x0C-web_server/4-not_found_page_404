@@ -6,11 +6,20 @@
 apt-get update
 apt-get install -y nginx
 
-echo "Hello World" > /var/www/html/index.nginx-debian.html
+mkdir /etc/nginx/html
+touch /etc/nginx/html/index.html
+echo "Hello World!" > /etc/nginx/html/index.html
 
-line1="rewrite ^/redirect_me$ https://www.google.com permanent"
-line2="rewrite ^/redirect_me/$ https://www.google.com permanent"
+#line1="rewrite ^/redirect_me$ https://www.google.com permanent"
+#line2="rewrite ^/redirect_me/$ https://www.google.com permanent"
 
-echo "Ceci n'est pas une page" >> /var/www/html/error_404.html
-sed -i '38i\error_page 404 /error_404.html;' /etc/nginx/sites-available/default
+echo "Ceci n'est pas une page" >> /etc/nginx/html/error_404.html
+printf %s "server {
+     listen      80 default_server;
+     listen      [::]:80 default_server;
+     root        /etc/nginx/html;
+     index       index.html index.htm;
+}
+" > /etc/nginx/sites-available/default
+
 service nginx start
