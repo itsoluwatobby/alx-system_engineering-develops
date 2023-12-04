@@ -1,24 +1,25 @@
 #!/usr/bin/env bash
-
 # a script to install nginx and then return a page with a string 'Hello World'
-# We are to make sure that the '/redirect_me' url is a permanent redirect
 
 sudo apt-get update
 sudo apt-get install -y nginx
 
-echo "Hello World!" > /etc/nginx/html/index.html
+# Creating an index.html page
+echo "Hello World!" > /var/www/html/index.html
 
-line1="\\\trewrite ^/redirect_me$ https://www.google.com permanent"
-line2="\n\\terror_page 404 /404.html;\n\tlocation = /var/www/html/404.html {\n\t\tinternal;\n\t}"
-PATTERN="#error_page 404 /404.html;"
+# Perform "permanent redirection" (301)
+string1="server_name _;\n\trewrite ^\/redirect_me https:\/\/github.com\/itsoluwatobby permanent;"
 
-sudo chown -R ubuntu /var/www
-echo "Hello World!" > /var/www/html/index.nginx-debian.html
+sudo sed -i "s/server_name _;/$string1/" /etc/nginx/sites-enabled/default
 
-sudo sed -i "30i $line1" /etc/nginx/sites-available/default
-echo "Ceci n'est pas une page" > /var/www/html/404.html
+# creating custom 404 error
+echo "Ceci n'est pas une page" > sudo tee /var/www/html/404.html
+string2="listen 80 default_server;\n\terror_page 404 \/404.html;\n\tlocation = \/404.html {\n\t\troot \/var\/www\/html;\n\t\tinternal;\n\t}"
 
-sudo sed -i "47i\ $PATTERN$line2" /etc/nginx/sites-available/default
+sudo sed -i "s/listen 80 default_server;/$string2/" /etc/nginx/sites-enabled/default
 
-sudo service nginx restart
+# Testing for syntax errors
+sudo nginx -t
+
+# restart nginx to effect changes
 sudo service nginx reload

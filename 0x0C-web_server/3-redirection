@@ -7,7 +7,7 @@ sudo apt-get install -y nginx
 
 sudo chown -R ubuntu /var/www
 echo "Hello World!" > /var/www/html/index.nginx-debian.html
-REDIRECT_LINK="\\\trewrite ^/redirect_me https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;"
-sudo sed -i "30i $REDIRECT_LINK" /etc/nginx/sites-available/default
+REDIRECT_LINK="\\\trewrite ^\/redirect_me https:\/\/www.youtube.com\/watch?v=QH2-TGUlwu4 permanent;"
+sudo sed -i "30i $REDIRECT_LINK" /etc/nginx/sites-enabled/default
 
 sudo service nginx start
