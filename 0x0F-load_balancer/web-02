@@ -1,0 +1,11 @@
+!#/usr/bin/env bash
+# script to login into web-02 server
+
+# setting up ssh agent
+eval $("ssh-agent")
+
+# declare my custom path to IdentityFile
+ssh-add ~/.ssh/school
+
+# username and IP address
+ssh ubuntu@54.172.58.174
