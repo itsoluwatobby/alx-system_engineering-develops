@@ -4,7 +4,7 @@
 sudo apt-get update -y
 sudo apt-get install -y haproxy
 
-sudo echo "ENABLED=1" >> sudo /etc/default/haproxy
+echo "ENABLED=1" >> sudo /etc/default/haproxy
 
 echo "
 frontend itsoluwatobby_frontend
