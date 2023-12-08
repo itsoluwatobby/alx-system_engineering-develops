@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 # make it short and sweet
-sed -i "s/8080/80/g" /etc/nginx/sites-enabled/default
+
+# create a symbolic link and listen on port 80
+ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
+
 # restart nginx to effect changes
 sudo service nginx restart
-rm /var/run/nginx.pid
+# kill the first nginx instance
+kill "$(pgrep 'nginx' | head -1)"
