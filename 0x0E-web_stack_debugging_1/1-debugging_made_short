@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 # make it short and sweet
 sed -i "s/8080/80/g" /etc/nginx/sites-enabled/default
-
 # restart nginx to effect changes
 sudo service nginx restart
-
-kill "$(pgrep 'nginx' | head -1)"
+rm /var/run/nginx.pid
