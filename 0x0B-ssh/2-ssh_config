@@ -1,4 +1,4 @@
-Host 52.91.148.80
+Host 54.146.94.114
     PasswordAuthentication no
     IdentityFile ~/.ssh/school
     SendEnv LANG LC_*
