@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+# install the ufw firewall and setup a few rules on web-01.
+# Requirements: The requirements below must be applied to web-01
+# 	(feel free to do it on lb-01 and web-02, but it won’t be checked)
+# Configure ufw so that it blocks all incoming traffic,
+# except the following TCP ports:
+# * 22 (SSH)	* 443 (HTTPS SSL)	* 80 (HTTP)
+
+sudo apt update
+sudo apt-get install -y ufw
+
+# checking if ufw is active
+sudo ufw status
+
+# closing all incoming requests with a firewall rule
+sudo ufw default deny incoming
+
+# allowing all outgoing requests
+sudo ufw default allow outgoing
+
+# allow the following ports
+sudo ufw allow ssh
+sudo ufw allow https
+sudo ufw allow http
+
+# enable ufw
+sudo ufw enable
+
+# check status again to if all changes have been applied
+sudo ufw status
