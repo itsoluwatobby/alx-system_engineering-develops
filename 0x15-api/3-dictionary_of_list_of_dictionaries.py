@@ -57,3 +57,29 @@ try:
         raise Exception("Error: {}".format(response.status_code))
 except Exception as e:
     print(e)
+
+
+def create_json():
+     user = response.json()
+        todo_url = 'https://jsonplaceholder.typicode.com/todos'
+
+        res = requests.get(todo_url)
+        todos = res.json()
+        user_todos = []
+
+        for todo in todos:
+            if todo['userId'] == user['id']:
+                user_todos.append(todo)
+
+        json_ft = ''
+        for todo in user_todos[:-1]:
+            json_ft += '{{"task": "{}", "completed": {}, "username": "{}"}}, '\
+                       .format(todo['title'], str(todo['completed']).lower(),
+                               user['username'])
+
+        l_todo = user_todos[-1]
+        last_val = '{{"task": "{}", "completed": {}, "username": "{}"}}'\
+                   .format(l_todo['title'], str(l_todo['completed']).lower(),
+                           user['username'])
+
+        return json_ft

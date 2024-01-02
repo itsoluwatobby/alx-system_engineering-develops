@@ -34,19 +34,21 @@ try:
             if todo['userId'] == user['id']:
                 user_todos.append(todo)
 
-        json_format = '{{"{}": ['.format(user['id'])
+        json_ft = '{{"{}": ['.format(user['id'])
         for todo in user_todos[:-1]:
-            json_format += '{{"task": "{}", "completed": {}, "username": "{}"}}, '\
-            .format(todo['title'], str(todo['completed']).lower(), user['username'])
+            json_ft += '{{"task": "{}", "completed": {}, "username": "{}"}}, '\
+                       .format(todo['title'], str(todo['completed']).lower(),
+                               user['username'])
 
         l_todo = user_todos[-1]
-        last_val = '{{"task": "{}", "completed": {}, "username": "{}"}}'.format(
-                    l_todo['title'], str(l_todo['completed']).lower(), user['username'])
+        last_val = '{{"task": "{}", "completed": {}, "username": "{}"}}'\
+                   .format(l_todo['title'], str(l_todo['completed']).lower(),
+                           user['username'])
 
-        json_format += '{}]}}'.format(last_val)
+        json_ft += '{}]}}'.format(last_val)
 
         with open('{}.json'.format(user['id']), 'w') as file:
-            file.write(json_format)
+            file.write(json_ft)
     else:
         raise Exception("Error: {}".format(response.status_code))
 except Exception as e:
