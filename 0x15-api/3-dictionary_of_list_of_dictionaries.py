@@ -20,6 +20,29 @@ Requirements:
 import requests
 
 
+def todo_with_user(todo, user):
+    return '{{"username": "{}", "task": "{}", "completed": {}}}'\
+            .format(user['username'], todo['title'],
+                    str(todo['completed']).lower())
+
+
+def create_json_format(user, todos):
+    user_todos = []
+
+    for todo in todos:
+        if todo['userId'] == user['id']:
+            user_todos.append(todo)
+
+    json_ft = '"{}": ['.format(user['id'])
+    for todo in user_todos[:-1]:
+        json_ft += todo_with_user(todo, user) + ', '
+
+    last_user_todo = todo_with_user(user_todos[-1], user)
+
+    json_ft += '{}]'.format(last_user_todo)
+    return json_ft
+
+
 users_url = 'https://jsonplaceholder.typicode.com/users'
 response = requests.get(users_url)
 
@@ -30,56 +53,17 @@ try:
 
         res = requests.get(todo_url)
         todos = res.json()
-        users_todos = []
 
-        # index = 1
-        for user in users:
-            print(user)
-            for todo in todos:
-                if todo['userId'] == user['id']:
-                    users_todos[user['id']].append(todo)
+        all_todos = '{'
+        for user in users[:-1]:
+            all_todos += create_json_format(user, todos) + ', '
 
-        print(user_todos)
-        # json_format = '{{"{}": ['.format(user['id'])
-        # for todo in users_todos[:-1]:
-        #    json_format += '{{"task": "{}", "completed": {}, "username": "{}"}}, '\
-        #    .format(todo['title'],str(todo['completed']).lower(),user['username'])
+        last_todo = create_json_format(users[-1], todos)
+        all_todos += '{}}}'.format(last_todo)
 
-        # l_todo = users_todos[-1]
-        # last_val = '{{"task": "{}", "completed": {}, "username": "{}"}}'\
-        #        .format(l_todo['title'],str(l_todo['completed']).lower(),user['username'])
-
-        # json_format += '{}]}}'.format(last_val)
-
-        # with open('todo_all_employees.json', 'w') as file:
-        #    file.write(json_format)
+        with open('todo_all_employees.json', 'w') as file:
+            file.write(all_todos)
     else:
         raise Exception("Error: {}".format(response.status_code))
 except Exception as e:
     print(e)
-
-
-def create_json():
-     user = response.json()
-        todo_url = 'https://jsonplaceholder.typicode.com/todos'
-
-        res = requests.get(todo_url)
-        todos = res.json()
-        user_todos = []
-
-        for todo in todos:
-            if todo['userId'] == user['id']:
-                user_todos.append(todo)
-
-        json_ft = ''
-        for todo in user_todos[:-1]:
-            json_ft += '{{"task": "{}", "completed": {}, "username": "{}"}}, '\
-                       .format(todo['title'], str(todo['completed']).lower(),
-                               user['username'])
-
-        l_todo = user_todos[-1]
-        last_val = '{{"task": "{}", "completed": {}, "username": "{}"}}'\
-                   .format(l_todo['title'], str(l_todo['completed']).lower(),
-                           user['username'])
-
-        return json_ft
