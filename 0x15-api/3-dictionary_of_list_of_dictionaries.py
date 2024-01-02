@@ -20,52 +20,51 @@ Requirements:
 import requests
 
 
-def todo_with_user(todo, user):
-    """Returns the string concatenation of the todo and user"""
-    return '{{"username": "{}", "task": "{}", "completed": {}}}'\
-           .format(user.get('username'), todo.get('title'),
-                   str(todo.get('completed')).lower())
+if __name__ == "__main__":
+    def todo_with_user(todo, user):
+        """Returns the string concatenation of the todo and user"""
+        return '{{"username": "{}", "task": "{}", "completed": {}}}'\
+               .format(user.get('username'), todo.get('title'),
+                       str(todo.get('completed')).lower())
 
+    def create_json_format(user, todos):
+        """Returns the array string format of the employee todos"""
+        user_todos = []
 
-def create_json_format(user, todos):
-    """Returns the array string format of the employee todos"""
-    user_todos = []
+        for todo in todos:
+            if todo.get('userId') == user.get('id'):
+                user_todos.append(todo)
 
-    for todo in todos:
-        if todo.get('userId') == user.get('id'):
-            user_todos.append(todo)
+        json_ft = '"{}": ['.format(user.get('id'))
+        for todo in user_todos[:-1]:
+            json_ft += todo_with_user(todo, user) + ', '
 
-    json_ft = '"{}": ['.format(user.get('id'))
-    for todo in user_todos[:-1]:
-        json_ft += todo_with_user(todo, user) + ', '
+        last_user_todo = todo_with_user(user_todos[-1], user)
 
-    last_user_todo = todo_with_user(user_todos[-1], user)
+        json_ft += '{}]'.format(last_user_todo)
+        return json_ft
 
-    json_ft += '{}]'.format(last_user_todo)
-    return json_ft
+    users_url = 'https://jsonplaceholder.typicode.com/users'
+    response = requests.get(users_url)
 
+    try:
+        if response.status_code == 200:
+            users = response.json()
+            todo_url = 'https://jsonplaceholder.typicode.com/todos'
 
-users_url = 'https://jsonplaceholder.typicode.com/users'
-response = requests.get(users_url)
+            res = requests.get(todo_url)
+            todos = res.json()
 
-try:
-    if response.status_code == 200:
-        users = response.json()
-        todo_url = 'https://jsonplaceholder.typicode.com/todos'
+            all_todos = '{'
+            for user in users[:-1]:
+                all_todos += create_json_format(user, todos) + ', '
 
-        res = requests.get(todo_url)
-        todos = res.json()
+            last_todo = create_json_format(users[-1], todos)
+            all_todos += '{}}}'.format(last_todo)
 
-        all_todos = '{'
-        for user in users[:-1]:
-            all_todos += create_json_format(user, todos) + ', '
-
-        last_todo = create_json_format(users[-1], todos)
-        all_todos += '{}}}'.format(last_todo)
-
-        with open('todo_all_employees.json', 'w') as file:
-            file.write(all_todos)
-    else:
-        raise Exception("Error: {}".format(response.status_code))
-except Exception as e:
-    print(e)
+            with open('todo_all_employees.json', 'w') as file:
+                file.write(all_todos)
+        else:
+            raise Exception("Error: {}".format(response.status_code))
+    except Exception as e:
+        print(e)

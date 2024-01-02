@@ -15,31 +15,36 @@ import requests
 from sys import argv
 
 
-user_url = 'https://jsonplaceholder.typicode.com/users/{}'.format(argv[1])
-response = requests.get(user_url)
-
-try:
-    if response.status_code == 200:
-        user = response.json()
-        todo_url = 'https://jsonplaceholder.typicode.com/todos'
-
-        res = requests.get(todo_url)
-        todos = res.json()
-        user_todos = []
-
-        for todo in todos:
-            if todo.get('userId') == user.get('id'):
-                user_todos.append(todo)
-
-        csv_format = ''
-        for todo in user_todos:
-            csv_format += '"{}","{}","{}","{}"\n'.format(
-                            user.get('id'), user.get('username'),
-                            todo.get('completed'), todo.get('title'))
-
-        with open('{}.csv'.format(user.get('id')), 'w') as file:
-            file.write(csv_format)
+if __name__ == "__main__":
+    if len(argv) == 1:
+        print('Employee ID is required')
     else:
-        raise Exception("Error: {}".format(response.status_code))
-except Exception as e:
-    print(e)
+        user_url = 'https://jsonplaceholder.typicode.com/users/{}'\
+                   .format(argv[1])
+        response = requests.get(user_url)
+
+        try:
+            if response.status_code == 200:
+                user = response.json()
+                todo_url = 'https://jsonplaceholder.typicode.com/todos'
+
+                res = requests.get(todo_url)
+                todos = res.json()
+                user_todos = []
+
+                for todo in todos:
+                    if todo.get('userId') == user.get('id'):
+                        user_todos.append(todo)
+
+                csv_format = ''
+                for todo in user_todos:
+                    csv_format += '"{}","{}","{}","{}"\n'.format(
+                                    user.get('id'), user.get('username'),
+                                    todo.get('completed'), todo.get('title'))
+
+                with open('{}.csv'.format(user.get('id')), 'w') as file:
+                    file.write(csv_format)
+            else:
+                raise Exception("Error: {}".format(response.status_code))
+        except Exception as e:
+            print(e)
