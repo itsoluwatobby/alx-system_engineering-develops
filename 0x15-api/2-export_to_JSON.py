@@ -18,6 +18,13 @@ import requests
 from sys import argv
 
 
+def todo_with_user(todo, user):
+    """Returns the string concatenation of the todo and user"""
+    return '{{"task": "{}", "completed": {}, "username": "{}"}}'\
+           .format(todo.get('title'), str(todo.get('completed')).lower(),
+                   user.get('username'))
+
+
 user_url = 'https://jsonplaceholder.typicode.com/users/{}'.format(argv[1])
 response = requests.get(user_url)
 
@@ -31,23 +38,17 @@ try:
         user_todos = []
 
         for todo in todos:
-            if todo['userId'] == user['id']:
+            if todo.get('userId') == user.get('id'):
                 user_todos.append(todo)
 
-        json_ft = '{{"{}": ['.format(user['id'])
+        json_ft = '{{"{}": ['.format(user.get('id'))
         for todo in user_todos[:-1]:
-            json_ft += '{{"task": "{}", "completed": {}, "username": "{}"}}, '\
-                       .format(todo['title'], str(todo['completed']).lower(),
-                               user['username'])
+            json_ft += todo_with_user(todo, user) + ', '
 
-        l_todo = user_todos[-1]
-        last_val = '{{"task": "{}", "completed": {}, "username": "{}"}}'\
-                   .format(l_todo['title'], str(l_todo['completed']).lower(),
-                           user['username'])
-
+        last_val = todo_with_user(user_todos[-1], user)
         json_ft += '{}]}}'.format(last_val)
 
-        with open('{}.json'.format(user['id']), 'w') as file:
+        with open('{}.json'.format(user.get('id')), 'w') as file:
             file.write(json_ft)
     else:
         raise Exception("Error: {}".format(response.status_code))

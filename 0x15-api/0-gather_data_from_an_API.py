@@ -22,17 +22,18 @@ try:
         user_todos = []
 
         for todo in todos:
-            if todo['userId'] == user['id']:
+            if todo.get('userId') == user.get('id'):
                 user_todos.append(todo)
 
         completed = ''
         for todo in user_todos:
-            if todo['completed']:
+            if todo.get('completed'):
                 completed_count += 1
-                completed += "\n\t {}".format(todo['title'])
+                completed += "\n\t {}".format(todo.get('title'))
 
-        result = "Employee {} is done with tasks({}/{}):".format(
-                  user['name'], completed_count, len(user_todos), completed)
+        result = "Employee {} is done with tasks({}/{}):"\
+                 .format(user.get('name'), completed_count,
+                         len(user_todos), completed)
         print("{}{}".format(result, completed))
     else:
         raise Exception("Error: {}".format(response.status_code))

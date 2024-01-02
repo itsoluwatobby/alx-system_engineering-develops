@@ -21,19 +21,21 @@ import requests
 
 
 def todo_with_user(todo, user):
+    """Returns the string concatenation of the todo and user"""
     return '{{"username": "{}", "task": "{}", "completed": {}}}'\
-            .format(user['username'], todo['title'],
-                    str(todo['completed']).lower())
+           .format(user.get('username'), todo.get('title'),
+                   str(todo.get('completed')).lower())
 
 
 def create_json_format(user, todos):
+    """Returns the array string format of the employee todos"""
     user_todos = []
 
     for todo in todos:
-        if todo['userId'] == user['id']:
+        if todo.get('userId') == user.get('id'):
             user_todos.append(todo)
 
-    json_ft = '"{}": ['.format(user['id'])
+    json_ft = '"{}": ['.format(user.get('id'))
     for todo in user_todos[:-1]:
         json_ft += todo_with_user(todo, user) + ', '
 

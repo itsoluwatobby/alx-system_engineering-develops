@@ -28,16 +28,16 @@ try:
         user_todos = []
 
         for todo in todos:
-            if todo['userId'] == user['id']:
+            if todo.get('userId') == user.get('id'):
                 user_todos.append(todo)
 
         csv_format = ''
         for todo in user_todos:
             csv_format += '"{}","{}","{}","{}"\n'.format(
-                            user['id'], user['username'],
-                            todo['completed'], todo['title'])
+                            user.get('id'), user.get('username'),
+                            todo.get('completed'), todo.get('title'))
 
-        with open('{}.csv'.format(user['id']), 'w') as file:
+        with open('{}.csv'.format(user.get('id')), 'w') as file:
             file.write(csv_format)
     else:
         raise Exception("Error: {}".format(response.status_code))
