@@ -12,7 +12,6 @@ def number_of_subscribers(subreddit):
     Arguments:
         subreddit(str) - passed from the command line
     """
-
     if not subreddit or not isinstance(subreddit, str):
         return 0
 

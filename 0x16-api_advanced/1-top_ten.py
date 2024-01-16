@@ -12,7 +12,6 @@ def top_ten(subreddit):
     Arguments:
         subreddit(str) - passed from the command line
     """
-
     if not subreddit or not isinstance(subreddit, str):
         print(None)
 
@@ -23,7 +22,6 @@ def top_ten(subreddit):
 
     try:
         data = result.get('data').get('children')
-
         for res in data:
             print(res.get('data').get('title'))
     except Exception:
