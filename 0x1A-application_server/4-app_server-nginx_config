@@ -5,7 +5,8 @@ server {
     listen 80 default_server;
     listen [::]:80 default_server;
 
-    # use IP of server as the domain server_name
+    root /var/www/html;
+    index index.html index.htm index.nginx-debian.html;
     server_name 54.146.94.114;
 
     add_header X-Served-By 357222-web-01;
