@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 # nginx server configuration for AirBnB_clone_v3
 
 server {
@@ -10,8 +11,8 @@ server {
     add_header X-Served-By 357222-web-01;
 
     # serve /airbnb-onepage/ route
-    location /airbnb-onepage/ {
-        proxy_pass http://127.0.0.1:5000/;
+    location = /airbnb-onepage/ {
+        proxy_pass http://127.0.0.1:5000/airbnb-onepage/;
     }
 
     # serve /number_odd_or_even/ route on Airbnb_clone_v2
