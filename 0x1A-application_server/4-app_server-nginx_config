@@ -1,4 +1,3 @@
-#!/usr/bin/env bash
 # nginx server configuration for AirBnB_clone_v3
 
 server {
